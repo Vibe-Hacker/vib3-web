@@ -27,6 +27,11 @@ app.use(express.urlencoded({ extended: true, limit: '100mb' }));
 // Serve static files from www directory
 app.use(express.static(path.join(__dirname, 'www')));
 
+// Serve index-heavy.html as the default
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'www', 'index-heavy.html'));
+});
+
 // Request logging middleware
 app.use((req, res, next) => {
     try {
