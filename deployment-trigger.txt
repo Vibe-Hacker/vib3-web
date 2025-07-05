@@ -1,0 +1,3 @@
+Deployment trigger: 2025-07-05 19:15 UTC
+This file forces Digital Ocean to rebuild.
+Restored working Railway version with full functionality.
