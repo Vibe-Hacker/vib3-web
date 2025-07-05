@@ -38,10 +38,17 @@ app.use((req, res, next) => {
 // Session management (simple in-memory for now)
 const sessions = new Map();
 
+// Simple session creator (full version defined later)
+function createSession(userId) {
+    const token = crypto.randomBytes(32).toString('hex');
+    sessions.set(token, { userId, createdAt: Date.now() });
+    return token;
+}
+
 // SUPER EARLY LOGIN ENDPOINT - registered immediately after middleware
 app.post('/api/auth/login', async (req, res) => {
     try {
-        console.log('🔐 SUPER EARLY LOGIN endpoint hit');
+        console.log('🔐 LOGIN endpoint hit');
         res.setHeader('Content-Type', 'application/json');
         
         const { email, password } = req.body;
@@ -50,21 +57,55 @@ app.post('/api/auth/login', async (req, res) => {
             return res.status(400).json({ error: 'Email and password required' });
         }
         
-        // Test login - bypasses all database issues
-        const token = 'test-token-' + Date.now();
-        sessions.set(token, { userId: 'test-user', createdAt: Date.now() });
+        // Wait for database if not connected yet
+        let retries = 0;
+        while (!db && retries < 10) {
+            console.log('⏳ Waiting for database connection...');
+            await new Promise(resolve => setTimeout(resolve, 500));
+            retries++;
+        }
         
-        return res.json({ 
-            token,
-            user: { 
-                _id: 'test-user',
-                email: email,
-                displayName: 'Test User',
-                username: 'testuser'
+        if (!db) {
+            console.error('❌ Database still not connected after 5 seconds');
+            return res.status(503).json({ error: 'Database not available. Please try again.' });
+        }
+        
+        try {
+            // Find user in database
+            const user = await db.collection('users').findOne({ email });
+            
+            if (!user) {
+                return res.status(401).json({ error: 'Invalid email or password' });
             }
-        });
+            
+            // Check password (handle both hashed and plain text for now)
+            const hashedPassword = crypto.createHash('sha256').update(password).digest('hex');
+            const passwordMatch = user.password === password || user.password === hashedPassword;
+            
+            if (!passwordMatch) {
+                return res.status(401).json({ error: 'Invalid email or password' });
+            }
+            
+            // Create session
+            const token = createSession(user._id.toString());
+            
+            return res.json({ 
+                token,
+                user: {
+                    _id: user._id,
+                    email: user.email,
+                    displayName: user.displayName || user.username,
+                    username: user.username,
+                    profilePicture: user.profilePicture,
+                    bio: user.bio
+                }
+            });
+        } catch (dbError) {
+            console.error('Database query error:', dbError);
+            return res.status(500).json({ error: 'Login failed: ' + dbError.message });
+        }
     } catch (error) {
-        console.error('Super early login error:', error);
+        console.error('Login endpoint error:', error);
         return res.status(500).json({ error: 'Login failed', details: error.message });
     }
 });
