@@ -27,10 +27,8 @@ app.use(express.urlencoded({ extended: true, limit: '100mb' }));
 // Serve static files from www directory
 app.use(express.static(path.join(__dirname, 'www')));
 
-// Serve Railway version without vib3-complete.js
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'www', 'index-railway.html'));
-});
+// Remove custom route - let static serve index.html like Railway does
+// app.use(express.static) will automatically serve index.html
 
 // Request logging middleware
 app.use((req, res, next) => {
