@@ -64,6 +64,20 @@ fetch('/api/videos')
                 });
                 
                 console.log('✅ Videos added to container');
+                
+                // Force container to be visible
+                container.style.display = 'block';
+                container.style.visibility = 'visible';
+                container.style.opacity = '1';
+                container.style.position = 'fixed';
+                container.style.top = '0';
+                container.style.left = '0';
+                container.style.width = '100%';
+                container.style.height = '100vh';
+                container.style.zIndex = '9999';
+                container.style.background = 'black';
+                
+                console.log('✅ Container styles applied');
             } else {
                 console.error('❌ No container found to display videos');
             }
