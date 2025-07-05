@@ -1,0 +1,40 @@
+spec:
+  name: vib3-web
+  services:
+  - name: web
+    git:
+      repo_clone_url: https://github.com/Vibe-Hacker/vib3-web
+      branch: main
+    build_command: npm install
+    run_command: npm start
+    environment_slug: node-js
+    instance_size_slug: professional-xs
+    instance_count: 1
+    http_port: 3000
+    routes:
+    - path: /
+    envs:
+    - key: NODE_ENV
+      value: production
+      scope: RUN_AND_BUILD_TIME
+    - key: PORT
+      value: "3000"
+      scope: RUN_TIME
+    - key: DATABASE_URL
+      value: "mongodb+srv://vib3user:vib3123@vib3cluster.mongodb.net/vib3?retryWrites=true&w=majority"
+      scope: RUN_TIME
+      type: SECRET
+    - key: DO_SPACES_KEY
+      value: "DO00RUBQWDCCVRFEWBFF"
+      scope: RUN_TIME
+      type: SECRET
+    - key: DO_SPACES_SECRET
+      value: "05J/3Y+QIh5a83Eag5rFxnp4RNhNOqfwVNUjbKNuqn8"
+      scope: RUN_TIME
+      type: SECRET
+    - key: DO_SPACES_BUCKET
+      value: "vib3-videos"
+      scope: RUN_TIME
+    - key: DO_SPACES_REGION
+      value: "nyc3"
+      scope: RUN_TIME
