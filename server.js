@@ -18,7 +18,7 @@ try {
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-console.log('🚀 VIB3 Server starting...');
+console.log('🚀 VIB3 Server starting... v2.1');
 
 // Middleware
 app.use(express.json({ limit: '100mb' }));
@@ -2041,12 +2041,13 @@ app.get('/api/health', async (req, res) => {
     const spacesConfigured = !!(process.env.DO_SPACES_KEY && process.env.DO_SPACES_SECRET);
     res.json({ 
         status: 'ok',
-        version: 'Fixed like API duplicate key error - build 627076c',
+        version: 'v2.1 - Fixed routing and MongoDB - ' + new Date().toISOString(),
         timestamp: new Date().toISOString(),
         uptime: process.uptime(),
         memory: Math.round(process.memoryUsage().heapUsed / 1024 / 1024) + ' MB',
         database: dbConnected ? 'connected' : 'not connected',
         databaseUrl: process.env.DATABASE_URL ? 'configured' : 'not configured',
+        dbUrlPreview: process.env.DATABASE_URL ? process.env.DATABASE_URL.substring(0, 30) + '...' : 'none',
         storage: spacesConfigured ? 'configured' : 'not configured'
     });
 });
