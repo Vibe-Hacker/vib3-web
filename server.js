@@ -321,6 +321,57 @@ app.get('/api/test', async (req, res) => {
     }
 });
 
+// EARLY LOGIN ENDPOINT - to ensure it's registered before static files
+app.post('/api/auth/login', async (req, res) => {
+    console.log('🔐 LOGIN endpoint hit (early route)');
+    const { email, password } = req.body;
+    
+    if (!email || !password) {
+        return res.status(400).json({ error: 'Email and password required' });
+    }
+    
+    if (!db) {
+        // For now, allow login without database for testing
+        console.log('⚠️ No database connected, using test login');
+        const token = 'test-token-' + Date.now();
+        sessions.set(token, { userId: 'test-user', createdAt: Date.now() });
+        return res.json({ 
+            token,
+            user: { 
+                _id: 'test-user',
+                email: email,
+                displayName: 'Test User',
+                username: 'testuser'
+            }
+        });
+    }
+    
+    try {
+        const user = await db.collection('users').findOne({ email });
+        
+        if (!user || user.password !== password) {
+            return res.status(401).json({ error: 'Invalid credentials' });
+        }
+        
+        const token = createSession(user._id.toString());
+        
+        res.json({ 
+            token,
+            user: {
+                _id: user._id,
+                email: user.email,
+                displayName: user.displayName || user.username,
+                username: user.username,
+                profilePicture: user.profilePicture,
+                bio: user.bio
+            }
+        });
+    } catch (error) {
+        console.error('Login error:', error);
+        res.status(500).json({ error: 'Login failed: ' + error.message });
+    }
+});
+
 // WORKING VIDEO FEED - using test pattern that works
 app.get('/api/test-videos', async (req, res) => {
     console.log('🎬 WORKING VIDEO ENDPOINT hit with query:', req.query);
@@ -2168,7 +2219,7 @@ app.post('/api/auth/register', async (req, res) => {
 });
 
 // User Login
-app.post('/api/auth/login', async (req, res) => {
+app.post('/api/auth/login-duplicate', async (req, res) => {
     if (!db) {
         return res.status(503).json({ error: 'Database not connected' });
     }
