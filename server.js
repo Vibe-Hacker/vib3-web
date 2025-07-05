@@ -1826,7 +1826,12 @@ let client = null;
 async function connectDB() {
     if (process.env.DATABASE_URL) {
         try {
-            client = new MongoClient(process.env.DATABASE_URL);
+            console.log('🔌 Attempting MongoDB connection...');
+            client = new MongoClient(process.env.DATABASE_URL, {
+                serverSelectionTimeoutMS: 5000, // 5 second timeout
+                connectTimeoutMS: 5000,
+                socketTimeoutMS: 5000
+            });
             await client.connect();
             db = client.db('vib3');
             
@@ -1837,6 +1842,8 @@ async function connectDB() {
             return true;
         } catch (error) {
             console.error('MongoDB connection error:', error.message);
+            console.error('Connection string starts with:', process.env.DATABASE_URL ? process.env.DATABASE_URL.substring(0, 30) : 'none');
+            db = null; // Ensure db is null on failure
             return false;
         }
     } else {
@@ -1940,8 +1947,13 @@ async function cleanupLikes() {
     }
 }
 
-// Connect to database on startup
-connectDB();
+// Connect to database after server starts (non-blocking)
+setTimeout(() => {
+    console.log('🔄 Starting database connection...');
+    connectDB().catch(err => {
+        console.error('Failed to connect to database:', err.message);
+    });
+}, 1000);
 
 // Helper function to create session
 function createSession(userId) {
@@ -5564,22 +5576,20 @@ app.get('*', (req, res) => {
 });
 
 // Start server
-const server = app.listen(PORT, '0.0.0.0', async () => {
+const server = app.listen(PORT, '0.0.0.0', () => {
     console.log('========================================');
-    console.log(`🚀 VIB3 FULL SERVER v2.0 WITH ANALYTICS`);
+    console.log(`🚀 VIB3 FULL SERVER v2.1 - FIXED ROUTING`);
     console.log('========================================');
     console.log(`Port: ${PORT}`);
     console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
     console.log(`Memory usage: ${Math.round(process.memoryUsage().heapUsed / 1024 / 1024)} MB`);
-    
-    // Connect to database
-    const dbConnected = await connectDB();
-    console.log(`Database: ${dbConnected ? 'Connected successfully' : 'No database configured'}`);
-    
+    console.log(`Database URL configured: ${!!process.env.DATABASE_URL}`);
     console.log('');
     console.log('📊 Analytics endpoint available at: /api/analytics/algorithm');
     console.log('🧪 Test endpoint available at: /api/test');
+    console.log('🏥 Health check available at: /api/health');
     console.log('========================================');
+    console.log('🔄 Database connection will start in 1 second...');
 });
 
 // Helper Functions
