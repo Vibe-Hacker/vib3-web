@@ -27,9 +27,9 @@ app.use(express.urlencoded({ extended: true, limit: '100mb' }));
 // Serve static files from www directory
 app.use(express.static(path.join(__dirname, 'www')));
 
-// Serve index-heavy.html as the default
+// Serve Railway version without vib3-complete.js
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'www', 'index-heavy.html'));
+    res.sendFile(path.join(__dirname, 'www', 'index-railway.html'));
 });
 
 // Request logging middleware
