@@ -1959,30 +1959,41 @@ let db = null;
 let client = null;
 
 async function connectDB() {
-    if (process.env.DATABASE_URL) {
-        try {
-            console.log('🔌 Attempting MongoDB connection...');
-            client = new MongoClient(process.env.DATABASE_URL, {
-                serverSelectionTimeoutMS: 5000, // 5 second timeout
-                connectTimeoutMS: 5000,
-                socketTimeoutMS: 5000
-            });
-            await client.connect();
-            db = client.db('vib3');
-            
-            // Create indexes for better performance
-            await createIndexes();
-            
-            console.log('✅ MongoDB connected successfully');
-            return true;
-        } catch (error) {
-            console.error('MongoDB connection error:', error.message);
-            console.error('Connection string starts with:', process.env.DATABASE_URL ? process.env.DATABASE_URL.substring(0, 30) : 'none');
-            db = null; // Ensure db is null on failure
-            return false;
-        }
-    } else {
-        console.log('No DATABASE_URL found - running without database');
+    // TEMPORARY WORKAROUND: Digital Ocean not updating DATABASE_URL properly
+    const CORRECT_URL = 'mongodb+srv://vibeadmin:P0pp0p25!@cluster0.y06bp.mongodb.net/vib3?retryWrites=true&w=majority&appName=Cluster0';
+    
+    let dbUrl = process.env.DATABASE_URL;
+    
+    // If we have the OLD URL, replace it with the correct one
+    if (dbUrl && dbUrl.includes('vib3cluster.mongodb.net')) {
+        console.log('⚠️ WARNING: Old MongoDB URL detected, using correct URL');
+        dbUrl = CORRECT_URL;
+    } else if (!dbUrl) {
+        console.log('⚠️ WARNING: No DATABASE_URL found, using hardcoded URL');
+        dbUrl = CORRECT_URL;
+    }
+    
+    try {
+        console.log('🔌 Attempting MongoDB connection...');
+        console.log('Using cluster:', dbUrl.includes('cluster0.y06bp') ? 'cluster0 (correct)' : 'unknown');
+        
+        client = new MongoClient(dbUrl, {
+            serverSelectionTimeoutMS: 5000, // 5 second timeout
+            connectTimeoutMS: 5000,
+            socketTimeoutMS: 5000
+        });
+        await client.connect();
+        db = client.db('vib3');
+        
+        // Create indexes for better performance
+        await createIndexes();
+        
+        console.log('✅ MongoDB connected successfully');
+        return true;
+    } catch (error) {
+        console.error('MongoDB connection error:', error.message);
+        console.error('Connection string starts with:', dbUrl ? dbUrl.substring(0, 30) : 'none');
+        db = null; // Ensure db is null on failure
         return false;
     }
 }
