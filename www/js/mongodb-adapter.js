@@ -29,6 +29,20 @@ window.mongoAPI = {
                 localStorage.setItem('authToken', data.token);
                 authToken = data.token;
                 currentUser = data.user;
+                window.currentUser = data.user;
+                window.auth.currentUser = data.user;
+                
+                // Hide auth container after successful login
+                const authContainer = document.getElementById('authContainer');
+                if (authContainer) {
+                    authContainer.style.display = 'none';
+                }
+                
+                // Trigger any initialization that happens after login
+                if (window.initializeAfterAuth) {
+                    window.initializeAfterAuth();
+                }
+                
                 return { success: true, user: data.user };
             } else {
                 console.error('Login failed - Status:', response.status, 'Data:', data);
@@ -54,6 +68,20 @@ window.mongoAPI = {
                 localStorage.setItem('authToken', data.token);
                 authToken = data.token;
                 currentUser = data.user;
+                window.currentUser = data.user;
+                window.auth.currentUser = data.user;
+                
+                // Hide auth container after successful login
+                const authContainer = document.getElementById('authContainer');
+                if (authContainer) {
+                    authContainer.style.display = 'none';
+                }
+                
+                // Trigger any initialization that happens after login
+                if (window.initializeAfterAuth) {
+                    window.initializeAfterAuth();
+                }
+                
                 return { success: true, user: data.user };
             } else {
                 console.error('Signup failed - Status:', response.status, 'Data:', data);
