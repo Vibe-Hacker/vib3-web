@@ -1,10 +1,10 @@
 // MongoDB Adapter for VIB3
 // This replaces Firebase functionality with MongoDB API calls
 
-// API base URL configuration
+// API base URL configuration - use same domain for Digital Ocean deployment
 const API_BASE_URL = window.API_BASE_URL || (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
-    ? '' 
-    : 'https://vib3-production.up.railway.app');
+    ? 'http://localhost:3000' 
+    : '');
 
 console.log('🔌 MongoDB adapter loading, API URL:', API_BASE_URL);
 
