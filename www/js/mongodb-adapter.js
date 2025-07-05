@@ -43,6 +43,18 @@ window.mongoAPI = {
                     window.initializeAfterAuth();
                 }
                 
+                // Initialize the app after successful login
+                if (window.initializeApp) {
+                    console.log('🚀 Initializing app after login...');
+                    window.initializeApp();
+                } else {
+                    console.log('⚠️ No initializeApp function found');
+                    // Try to load videos directly
+                    if (window.loadInitialVideos) {
+                        window.loadInitialVideos();
+                    }
+                }
+                
                 return { success: true, user: data.user };
             } else {
                 console.error('Login failed - Status:', response.status, 'Data:', data);
@@ -80,6 +92,18 @@ window.mongoAPI = {
                 // Trigger any initialization that happens after login
                 if (window.initializeAfterAuth) {
                     window.initializeAfterAuth();
+                }
+                
+                // Initialize the app after successful login
+                if (window.initializeApp) {
+                    console.log('🚀 Initializing app after login...');
+                    window.initializeApp();
+                } else {
+                    console.log('⚠️ No initializeApp function found');
+                    // Try to load videos directly
+                    if (window.loadInitialVideos) {
+                        window.loadInitialVideos();
+                    }
                 }
                 
                 return { success: true, user: data.user };
