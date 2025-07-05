@@ -24,13 +24,7 @@ console.log('🚀 VIB3 Server starting...');
 app.use(express.json({ limit: '100mb' }));
 app.use(express.urlencoded({ extended: true, limit: '100mb' }));
 
-// Serve static files from www directory
-app.use(express.static(path.join(__dirname, 'www')));
-
-// Remove custom route - let static serve index.html like Railway does
-// app.use(express.static) will automatically serve index.html
-
-// Request logging middleware
+// Request logging middleware - MOVED BEFORE static files
 app.use((req, res, next) => {
     try {
         console.log(`📥 ${new Date().toISOString()} - ${req.method} ${req.url}`);
@@ -5558,6 +5552,14 @@ app.use((err, req, res, next) => {
     console.error('Stack:', err.stack);
     console.error('URL:', req.url);
     res.status(500).json({ error: 'Something broke!', memory: Math.round(process.memoryUsage().heapUsed / 1024 / 1024) + ' MB' });
+});
+
+// Serve static files from www directory - AFTER all API routes
+app.use(express.static(path.join(__dirname, 'www')));
+
+// Catch-all route for SPA - serve index.html for any unmatched routes
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'www', 'index.html'));
 });
 
 // Start server
