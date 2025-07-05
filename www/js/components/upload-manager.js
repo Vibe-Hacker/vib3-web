@@ -1858,4 +1858,5 @@ const uploadManager = new UploadManager();
 // Make upload manager globally available
 window.uploadManager = uploadManager;
 
-export default UploadManager;
+// Make UploadManager globally available
+window.UploadManager = UploadManager;
