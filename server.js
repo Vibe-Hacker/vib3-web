@@ -132,23 +132,84 @@ app.get('/health', (req, res) => {
     res.status(200).json({ status: 'OK', timestamp: new Date().toISOString() });
 });
 
+// Force MongoDB connection test
+app.get('/force-db-connect', async (req, res) => {
+    const { MongoClient } = require('mongodb');
+    const url = process.env.DATABASE_URL;
+    
+    if (!url) {
+        return res.json({ error: 'No DATABASE_URL environment variable' });
+    }
+    
+    try {
+        const client = new MongoClient(url, {
+            serverSelectionTimeoutMS: 5000,
+            connectTimeoutMS: 5000
+        });
+        await client.connect();
+        const database = client.db('vib3');
+        const users = await database.collection('users').countDocuments();
+        await client.close();
+        
+        return res.json({
+            success: true,
+            userCount: users,
+            urlInfo: {
+                host: url.includes('@') ? url.split('@')[1].split('/')[0] : 'unknown',
+                user: url.includes('://') ? url.split('://')[1].split(':')[0] : 'unknown'
+            }
+        });
+    } catch (error) {
+        return res.json({
+            error: error.message,
+            code: error.code,
+            urlInfo: {
+                host: url.includes('@') ? url.split('@')[1].split('/')[0] : 'unknown',
+                user: url.includes('://') ? url.split('://')[1].split(':')[0] : 'unknown',
+                urlLength: url.length
+            }
+        });
+    }
+});
+
 // Test MongoDB connection endpoint
 app.get('/test-db', async (req, res) => {
     try {
+        const dbUrl = process.env.DATABASE_URL;
+        const urlInfo = dbUrl ? {
+            hasUrl: true,
+            host: dbUrl.includes('@') ? dbUrl.split('@')[1].split('/')[0] : 'unknown',
+            user: dbUrl.includes('://') ? dbUrl.split('://')[1].split(':')[0] : 'unknown',
+            isCorrectCluster: dbUrl.includes('cluster0.y06bp.mongodb.net'),
+            isOldCluster: dbUrl.includes('vib3cluster.mongodb.net')
+        } : { hasUrl: false };
+        
         if (!db) {
-            return res.status(500).json({ error: 'Database not connected', db: !!db });
+            return res.status(500).json({ 
+                error: 'Database not connected', 
+                db: !!db,
+                urlInfo,
+                envCheck: {
+                    DATABASE_URL_exists: !!process.env.DATABASE_URL,
+                    NODE_ENV: process.env.NODE_ENV
+                }
+            });
         }
         const count = await db.collection('users').countDocuments();
         res.json({ 
             status: 'Connected', 
             userCount: count,
             dbName: db.databaseName,
+            urlInfo,
             timestamp: new Date().toISOString()
         });
     } catch (error) {
         res.status(500).json({ 
             error: error.message,
             code: error.code,
+            urlInfo: {
+                hasUrl: !!process.env.DATABASE_URL
+            },
             timestamp: new Date().toISOString()
         });
     }
