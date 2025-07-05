@@ -66,6 +66,28 @@ app.get('/health', (req, res) => {
     res.status(200).json({ status: 'OK', timestamp: new Date().toISOString() });
 });
 
+// Test MongoDB connection endpoint
+app.get('/test-db', async (req, res) => {
+    try {
+        if (!db) {
+            return res.status(500).json({ error: 'Database not connected', db: !!db });
+        }
+        const count = await db.collection('users').countDocuments();
+        res.json({ 
+            status: 'Connected', 
+            userCount: count,
+            dbName: db.databaseName,
+            timestamp: new Date().toISOString()
+        });
+    } catch (error) {
+        res.status(500).json({ 
+            error: error.message,
+            code: error.code,
+            timestamp: new Date().toISOString()
+        });
+    }
+});
+
 // VIDEO FEED ENDPOINT - at root level to bypass all routing issues
 app.get('/feed', async (req, res) => {
     console.log('🎬 ROOT LEVEL FEED ENDPOINT HIT!');
