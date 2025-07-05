@@ -1,9 +1,26 @@
 // Simple feed functions for VIB3
 
+// Main feed loading function
+window.loadFeed = function() {
+    console.log('📹 Loading feed...');
+    loadVideoFeed('foryou', false);
+};
+
+// Load initial videos (alias)
+window.loadInitialVideos = window.loadFeed;
+
 // Load video feed
 async function loadVideoFeed(feedType = 'foryou', forceRefresh = false) {
-    const videoFeed = document.getElementById('videoFeed');
-    if (!videoFeed) return;
+    // Try multiple possible feed containers
+    let videoFeed = document.getElementById('videoFeed') || 
+                   document.getElementById('homeFeed') || 
+                   document.getElementById('mainFeed') ||
+                   document.querySelector('.video-feed');
+    
+    if (!videoFeed) {
+        console.error('No video feed container found');
+        return;
+    }
     
     // Show loading
     videoFeed.innerHTML = `
@@ -22,10 +39,20 @@ async function loadVideoFeed(feedType = 'foryou', forceRefresh = false) {
         
         if (data.videos && data.videos.length > 0) {
             videoFeed.innerHTML = '';
+            
+            // Set scroll snap on container
+            videoFeed.style.cssText = 'height: 100vh; overflow-y: scroll; scroll-snap-type: y mandatory; -webkit-overflow-scrolling: touch;';
+            
             data.videos.forEach(video => {
                 const videoCard = createVideoCard(video);
                 videoFeed.appendChild(videoCard);
             });
+            
+            // Auto-play first video
+            const firstVideo = videoFeed.querySelector('video');
+            if (firstVideo) {
+                firstVideo.play().catch(() => console.log('Autoplay blocked'));
+            }
         } else {
             videoFeed.innerHTML = `
                 <div class="empty-feed">
@@ -49,42 +76,54 @@ async function loadVideoFeed(feedType = 'foryou', forceRefresh = false) {
 // Create video card element
 function createVideoCard(video) {
     const card = document.createElement('div');
-    card.className = 'video-card';
+    card.className = 'video-item';
+    card.style.cssText = 'position: relative; height: 100vh; width: 100%; background: black; scroll-snap-align: start;';
+    
+    // Get user info
+    const username = video.user?.username || video.username || 'unknown';
+    const displayName = video.user?.displayName || video.user?.username || '';
+    const profilePic = video.user?.profilePicture || video.user?.profileImage || '';
+    
     card.innerHTML = `
-        <div class="video-container">
-            <video 
-                class="video-element" 
-                src="${video.videoUrl || 'https://example.com/sample.mp4'}"
-                poster="${video.thumbnail || ''}"
-                loop
-                muted
-                onclick="toggleVideoPlayback(this.parentElement)"
-            ></video>
-            <div class="play-pause-indicator">▶️</div>
-            
-            <div class="video-info">
-                <div class="user-info">
-                    <div class="user-avatar">${video.userAvatar || '👤'}</div>
-                    <div class="user-details">
-                        <div class="username">@${video.username || 'user'}</div>
-                        <div class="upload-time">${formatDate(video.createdAt)}</div>
-                    </div>
-                </div>
-                
-                <div class="video-description">${video.description || ''}</div>
-                
-                <div class="video-actions">
-                    <button class="action-btn like-btn" onclick="handleLikeClick('${video._id}', this)">
-                        ❤️ <span>${video.likeCount || 0}</span>
-                    </button>
-                    <button class="action-btn comment-btn">
-                        💬 <span>${video.commentCount || 0}</span>
-                    </button>
-                    <button class="action-btn share-btn" onclick="shareVideo('${video._id}')">
-                        🔗 Share
-                    </button>
-                </div>
+        <video 
+            class="video-element" 
+            src="${video.videoUrl}"
+            style="width: 100%; height: 100%; object-fit: contain;"
+            autoplay
+            muted
+            loop
+            playsinline
+            onclick="toggleVideoPlayback(this)"
+        ></video>
+        
+        <div class="video-sidebar" style="position: absolute; bottom: 80px; right: 10px; display: flex; flex-direction: column; gap: 20px; align-items: center;">
+            <div class="video-action" onclick="window.showProfile('${video.userId}')" style="cursor: pointer;">
+                ${profilePic ? 
+                    `<img src="${profilePic}" style="width: 48px; height: 48px; border-radius: 50%; border: 2px solid white;">` :
+                    '<div style="width: 48px; height: 48px; border-radius: 50%; background: #333; border: 2px solid white;"></div>'
+                }
             </div>
+            
+            <div class="video-action" onclick="handleLikeClick('${video._id}', this)" style="cursor: pointer; text-align: center;">
+                <div style="font-size: 28px;">❤️</div>
+                <div style="color: white; font-size: 12px;">${video.likeCount || 0}</div>
+            </div>
+            
+            <div class="video-action" onclick="showComments('${video._id}')" style="cursor: pointer; text-align: center;">
+                <div style="font-size: 28px;">💬</div>
+                <div style="color: white; font-size: 12px;">${video.commentCount || 0}</div>
+            </div>
+            
+            <div class="video-action" onclick="shareVideo('${video._id}')" style="cursor: pointer; text-align: center;">
+                <div style="font-size: 28px;">↗️</div>
+                <div style="color: white; font-size: 12px;">Share</div>
+            </div>
+        </div>
+        
+        <div class="video-info" style="position: absolute; bottom: 80px; left: 10px; right: 70px; color: white;">
+            <h3 style="margin: 0 0 5px 0; font-size: 16px;">@${username}</h3>
+            ${displayName ? `<p style="margin: 0 0 10px 0; opacity: 0.8; font-size: 14px;">${displayName}</p>` : ''}
+            <p style="margin: 0; font-size: 14px;">${video.title || video.description || ''}</p>
         </div>
     `;
     
