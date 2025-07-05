@@ -1159,7 +1159,44 @@
     <script src="js/comments-simple.js"></script>
     <script src="js/search-simple.js"></script>
     <script src="js/components/upload-manager.js?v=20250702001"></script>
-    <!-- vib3-complete.js removed to prevent live streaming issues -->
+    <!-- vib3-complete.js removed to prevent live streaming cache issues -->
+    
+    <!-- Initialize app after auth -->
+    <script>
+        // Check auth state on load
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 VIB3 App initializing...');
+            
+            // Check if user is logged in
+            const authToken = localStorage.getItem('authToken');
+            if (authToken) {
+                console.log('✅ User authenticated, hiding login screen');
+                const authContainer = document.getElementById('authContainer');
+                if (authContainer) {
+                    authContainer.style.display = 'none';
+                }
+                
+                // Initialize feed
+                if (window.loadFeed) {
+                    window.loadFeed();
+                } else if (window.loadInitialVideos) {
+                    window.loadInitialVideos();
+                } else {
+                    console.log('⚠️ No feed loading function found');
+                    // Try to load videos directly
+                    fetch('/api/test?limit=20')
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.videos && data.videos.length > 0) {
+                                console.log(`✅ Loaded ${data.videos.length} videos`);
+                                // TODO: Display videos
+                            }
+                        })
+                        .catch(err => console.error('Error loading videos:', err));
+                }
+            }
+        });
+    </script>
     
     <!-- Auto-testing and fixing scripts for development -->
     <script>
