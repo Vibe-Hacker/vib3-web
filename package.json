@@ -1,7 +1,7 @@
 {
   "name": "vib3",
-  "version": "1.0.1",
-  "description": "VIB3 - Video social sharing platform",
+  "version": "2.0.0",
+  "description": "VIB3 - Video social sharing platform - CLEAN RAILWAY VERSION",
   "license": "ISC",
   "author": "Tavis Chaney",
   "main": "server.js",
