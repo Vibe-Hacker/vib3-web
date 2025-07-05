@@ -1,5 +1,5 @@
-// Upload manager module
-import { db, storage } from '../firebase-init.js';
+// Upload manager module - converted to global script
+// No ES6 imports - using global variables
 
 class UploadManager {
     constructor() {
