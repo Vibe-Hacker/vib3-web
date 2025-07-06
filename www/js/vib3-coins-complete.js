@@ -27,18 +27,6 @@ window.showVIB3CoinsComplete = function() {
     `;
     
     coinsPage.innerHTML = `
-        <!-- Top Gradient Header -->
-        <div style="
-            background: linear-gradient(135deg, #00d4ff 0%, #ff0080 100%);
-            padding: 20px 40px;
-            text-align: center;
-            color: white;
-            font-size: 24px;
-            font-weight: 600;
-        ">
-            Welcome to VIB3 - Where Creativity Vibes
-        </div>
-        
         <!-- Yellow Main Section -->
         <div style="
             background: linear-gradient(135deg, #ffc107 0%, #ffb300 100%);

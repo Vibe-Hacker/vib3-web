@@ -27,23 +27,10 @@ window.showVibeRoomsComplete = function() {
     `;
     
     vibeRoomsPage.innerHTML = `
-        <!-- Gradient Header -->
-        <div style="
-            background: linear-gradient(135deg, #00d4ff 0%, #ff0080 100%);
-            padding: 30px;
-            text-align: center;
-            color: white;
-            font-size: 24px;
-            font-weight: 600;
-            margin-bottom: 40px;
-        ">
-            Welcome to VIB3 - Where Creativity Vibes
-        </div>
-        
         <!-- Vibe Rooms Header -->
         <div style="
             background: linear-gradient(135deg, #7c3aed 0%, #ec4899 100%);
-            margin: 0 40px;
+            margin: 40px 40px 0 40px;
             padding: 40px;
             border-radius: 20px;
             text-align: center;

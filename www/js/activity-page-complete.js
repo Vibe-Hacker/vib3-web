@@ -27,17 +27,13 @@ window.showActivityComplete = function() {
     `;
     
     activityPage.innerHTML = `
-        <!-- Gradient Header -->
-        <div style="
-            background: linear-gradient(135deg, #00d4ff 0%, #ff0080 100%);
-            padding: 30px 40px;
-            text-align: center;
+        <!-- Activity Header -->
+        <h1 style="
             color: white;
-            font-size: 24px;
-            font-weight: 600;
-        ">
-            Welcome to VIB3 - Where Creativity Vibes
-        </div>
+            font-size: 32px;
+            padding: 30px 40px 20px 40px;
+            margin: 0;
+        ">Activity</h1>
         
         <!-- Subtitle -->
         <div style="
