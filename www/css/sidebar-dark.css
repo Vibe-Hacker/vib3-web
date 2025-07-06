@@ -1,0 +1,78 @@
+/* Dark Sidebar Styling - Matches Screenshot */
+.sidebar {
+    background: #1a1a1a !important;
+    width: 200px !important;
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 1000;
+    border-right: 1px solid #333;
+}
+
+.vib3-logo {
+    color: #00d4ff !important;
+    font-size: 36px !important;
+    font-weight: 700 !important;
+    text-align: center;
+    padding: 20px 0;
+    margin: 0;
+}
+
+.sidebar input[type="text"] {
+    background: #2a2a2a !important;
+    border: 1px solid #444 !important;
+    color: white !important;
+    padding: 10px 15px !important;
+    border-radius: 8px !important;
+    width: calc(100% - 40px) !important;
+    margin: 0 20px 20px 20px !important;
+}
+
+.sidebar-item {
+    display: flex !important;
+    align-items: center !important;
+    gap: 15px !important;
+    padding: 12px 20px !important;
+    color: #ccc !important;
+    background: transparent !important;
+    border: none !important;
+    width: 100% !important;
+    text-align: left !important;
+    cursor: pointer !important;
+    transition: all 0.2s !important;
+    font-size: 16px !important;
+}
+
+.sidebar-item:hover {
+    background: rgba(255,255,255,0.1) !important;
+    color: white !important;
+}
+
+.sidebar-item.active {
+    background: rgba(0,212,255,0.1) !important;
+    color: #00d4ff !important;
+    border-left: 3px solid #00d4ff !important;
+}
+
+.sidebar-icon {
+    width: 24px !important;
+    height: 24px !important;
+    flex-shrink: 0 !important;
+}
+
+.sidebar-text {
+    flex: 1 !important;
+}
+
+/* Special styling for certain buttons */
+#sidebarVibeRooms .sidebar-icon { color: #fbbf24; }
+#sidebarLive .sidebar-icon { color: #ef4444; }
+#sidebarUpload .sidebar-icon { color: #10b981; }
+#sidebarCreatorStudio .sidebar-icon { color: #8b5cf6; }
+#sidebarChallenges .sidebar-icon { color: #f59e0b; }
+#sidebarCollaborate .sidebar-icon { color: #3b82f6; }
+#sidebarCoins .sidebar-icon { color: #eab308; }
+#sidebarActivity .sidebar-icon { color: #6366f1; }
+#sidebarMessages .sidebar-icon { color: #06b6d4; }
+#sidebarProfile .sidebar-icon { color: #ec4899; }
