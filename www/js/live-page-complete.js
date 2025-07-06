@@ -580,18 +580,5 @@ window.showLivePageComplete = function() {
     }
 };
 
-// Override showPage for live
-const originalShowPageLive = window.showPage;
-window.showPage = function(page) {
-    if (page === 'live') {
-        showLivePageComplete();
-    } else if (page === 'viberooms') {
-        if (window.showVibeRoomsComplete) {
-            window.showVibeRoomsComplete();
-        }
-    } else if (originalShowPageLive) {
-        originalShowPageLive(page);
-    }
-};
 
 console.log('✅ Live Streaming page complete');

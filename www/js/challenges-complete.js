@@ -424,14 +424,5 @@ window.showChallengesComplete = function() {
     }
 };
 
-// Override showPage for challenges
-const originalShowPageChallenges = window.showPage;
-window.showPage = function(page) {
-    if (page === 'challenges') {
-        showChallengesComplete();
-    } else if (originalShowPageChallenges) {
-        originalShowPageChallenges(page);
-    }
-};
 
 console.log('✅ VIB3 Challenges page complete');

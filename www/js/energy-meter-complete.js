@@ -281,14 +281,5 @@ window.closeEnergyMeter = function() {
     }
 };
 
-// Override showPage for energy meter
-const originalShowPageEnergy = window.showPage;
-window.showPage = function(page) {
-    if (page === 'energymeter') {
-        showEnergyMeterComplete();
-    } else if (originalShowPageEnergy) {
-        originalShowPageEnergy(page);
-    }
-};
 
 console.log('✅ VIB3 Energy Meter loaded');

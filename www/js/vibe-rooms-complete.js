@@ -199,14 +199,5 @@ window.showVibeRoomsComplete = function() {
     }
 };
 
-// Override the showPage function for viberooms
-const originalShowPage = window.showPage;
-window.showPage = function(page) {
-    if (page === 'viberooms') {
-        showVibeRoomsComplete();
-    } else if (originalShowPage) {
-        originalShowPage(page);
-    }
-};
 
 console.log('✅ Vibe Rooms complete UI loaded');

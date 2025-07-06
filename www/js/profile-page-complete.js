@@ -364,14 +364,5 @@ function generateProfileVideos() {
     `).join('');
 }
 
-// Override showPage for profile
-const originalShowPageProfile = window.showPage;
-window.showPage = function(page) {
-    if (page === 'profile') {
-        showProfileComplete();
-    } else if (originalShowPageProfile) {
-        originalShowPageProfile(page);
-    }
-};
 
 console.log('✅ VIB3 Profile page complete');

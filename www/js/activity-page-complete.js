@@ -207,14 +207,5 @@ function generateActivityItems() {
     return activities.join('');
 }
 
-// Override showPage for activity
-const originalShowPageActivity = window.showPage;
-window.showPage = function(page) {
-    if (page === 'activity') {
-        showActivityComplete();
-    } else if (originalShowPageActivity) {
-        originalShowPageActivity(page);
-    }
-};
 
 console.log('✅ VIB3 Activity page complete');

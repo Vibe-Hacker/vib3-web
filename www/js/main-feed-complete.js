@@ -30,7 +30,7 @@ window.showMainFeed = function() {
     
     mainFeedPage.innerHTML = `
         <!-- Gradient Header -->
-        <div style="
+        <div id="vib3WelcomeHeader" style="
             background: linear-gradient(135deg, #00d4ff 0%, #ff0080 100%);
             padding: 20px 40px;
             text-align: center;
@@ -462,15 +462,6 @@ function setupVideoObserver(container) {
     }, 100);
 }
 
-// Override showPage for main feed
-const originalShowPageFeed = window.showPage;
-window.showPage = function(page) {
-    if (page === 'home' || page === 'feed' || page === 'foryou') {
-        showMainFeed();
-    } else if (originalShowPageFeed) {
-        originalShowPageFeed(page);
-    }
-};
 
 // Auto-show feed after login
 window.showFeedAfterLogin = function() {

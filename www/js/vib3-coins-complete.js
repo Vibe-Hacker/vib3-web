@@ -483,14 +483,5 @@ window.showVIB3CoinsComplete = function() {
     }
 };
 
-// Override showPage for coins
-const originalShowPageCoins = window.showPage;
-window.showPage = function(page) {
-    if (page === 'coins' || page === 'vib3coins') {
-        showVIB3CoinsComplete();
-    } else if (originalShowPageCoins) {
-        originalShowPageCoins(page);
-    }
-};
 
 console.log('✅ VIB3 Coins page complete');
