@@ -70,7 +70,27 @@ observer.observe(document.body, {
 
 // Also handle any videos already on the page
 document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('video').forEach(video => forcePlayVideo(video));
+    setTimeout(() => {
+        document.querySelectorAll('video').forEach(video => forcePlayVideo(video));
+        
+        // Force play first visible video
+        const firstVideo = document.querySelector('video[data-video-index="0"]') || document.querySelector('video');
+        if (firstVideo) {
+            firstVideo.muted = true; // Start muted for autoplay
+            firstVideo.play().then(() => {
+                console.log('✅ First video autoplaying');
+                // Unmute after successful play
+                setTimeout(() => {
+                    firstVideo.muted = false;
+                }, 500);
+            }).catch(err => {
+                console.log('❌ Autoplay failed, retrying...', err);
+                setTimeout(() => {
+                    firstVideo.play().catch(e => console.log('Retry failed:', e));
+                }, 1000);
+            });
+        }
+    }, 500);
 });
 
 // Handle page visibility - pause/resume videos

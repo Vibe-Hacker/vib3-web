@@ -47,7 +47,7 @@ window.showMainFeed = function() {
         <div style="
             display: flex;
             justify-content: center;
-            gap: 30px;
+            gap: 15px;
             padding: 20px;
             background: #0a0a0a;
             border-bottom: 1px solid #222;
@@ -58,72 +58,77 @@ window.showMainFeed = function() {
                 background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 100%);
                 color: white;
                 border: none;
-                padding: 10px 24px;
-                border-radius: 25px;
+                padding: 12px 28px;
+                border-radius: 30px;
                 font-size: 16px;
                 font-weight: 600;
                 cursor: pointer;
                 display: flex;
                 align-items: center;
                 gap: 8px;
+                box-shadow: 0 4px 15px rgba(236, 72, 153, 0.3);
             ">
-                🏠 Home
+                Home
             </button>
             
             <button onclick="setFeedTab('squad')" id="squadTab" style="
-                background: transparent;
-                color: #888;
-                border: 1px solid #333;
-                padding: 10px 24px;
-                border-radius: 25px;
+                background: rgba(255,255,255,0.1);
+                color: #ccc;
+                border: none;
+                padding: 12px 28px;
+                border-radius: 30px;
                 font-size: 16px;
                 font-weight: 600;
                 cursor: pointer;
+                backdrop-filter: blur(10px);
             ">
                 Squad
             </button>
             
             <button onclick="setFeedTab('pulse')" id="pulseTab" style="
-                background: transparent;
-                color: #888;
-                border: 1px solid #333;
-                padding: 10px 24px;
-                border-radius: 25px;
+                background: rgba(255,255,255,0.1);
+                color: #ccc;
+                border: none;
+                padding: 12px 28px;
+                border-radius: 30px;
                 font-size: 16px;
                 font-weight: 600;
                 cursor: pointer;
                 display: flex;
                 align-items: center;
                 gap: 8px;
+                backdrop-filter: blur(10px);
             ">
                 ⚡ Pulse Feed
             </button>
             
             <button onclick="setFeedTab('discover')" id="discoverTab" style="
-                background: transparent;
-                color: #888;
-                border: 1px solid #333;
-                padding: 10px 24px;
-                border-radius: 25px;
+                background: rgba(255,255,255,0.1);
+                color: #ccc;
+                border: none;
+                padding: 12px 28px;
+                border-radius: 30px;
                 font-size: 16px;
                 font-weight: 600;
                 cursor: pointer;
+                backdrop-filter: blur(10px);
             ">
                 Discover
             </button>
             
             <button onclick="setFeedTab('vibing')" id="vibingTab" style="
-                background: transparent;
-                color: #888;
-                border: 1px solid #333;
-                padding: 10px 24px;
-                border-radius: 25px;
+                background: rgba(255,255,255,0.1);
+                color: #ccc;
+                border: none;
+                padding: 12px 28px;
+                border-radius: 30px;
                 font-size: 16px;
                 font-weight: 600;
                 cursor: pointer;
                 display: flex;
                 align-items: center;
                 gap: 8px;
+                backdrop-filter: blur(10px);
             ">
                 ✨ Vibing
             </button>
@@ -171,11 +176,11 @@ window.setFeedTab = function(tab) {
             if (t === tab) {
                 tabEl.style.background = 'linear-gradient(135deg, #ec4899 0%, #8b5cf6 100%)';
                 tabEl.style.color = 'white';
-                tabEl.style.border = 'none';
+                tabEl.style.boxShadow = '0 4px 15px rgba(236, 72, 153, 0.3)';
             } else {
-                tabEl.style.background = 'transparent';
-                tabEl.style.color = '#888';
-                tabEl.style.border = '1px solid #333';
+                tabEl.style.background = 'rgba(255,255,255,0.1)';
+                tabEl.style.color = '#ccc';
+                tabEl.style.boxShadow = 'none';
             }
         }
     });
@@ -265,68 +270,58 @@ function displayMainFeedVideos(videos) {
                 autoplay
                 playsinline
                 webkit-playsinline
+                data-video-index="${index}"
             ></video>
             
             <!-- User info overlay -->
             <div style="
                 position: absolute;
-                bottom: 80px;
+                bottom: 100px;
                 left: 20px;
                 color: white;
                 text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+                z-index: 10;
             ">
-                <h3 style="margin: 0 0 10px 0; font-size: 18px;">
-                    @${video.user?.username || 'vibeuser'}
+                <h3 style="margin: 0 0 10px 0; font-size: 16px; font-weight: 600;">
+                    @${video.user?.username || 'oldergenx'}
                 </h3>
                 <p style="margin: 0; font-size: 14px; max-width: 300px;">
-                    ${video.description || 'Check out this video! 🔥'}
+                    ${video.description || 'Check out this video!'}
                 </p>
             </div>
             
-            <!-- Action buttons -->
+            <!-- Action buttons - Right side -->
             <div style="
                 position: absolute;
-                bottom: 80px;
+                bottom: 100px;
                 right: 20px;
                 display: flex;
                 flex-direction: column;
                 gap: 20px;
                 align-items: center;
+                z-index: 10;
             ">
-                <!-- Profile -->
-                <div style="cursor: pointer; text-align: center;">
-                    <div style="
-                        width: 48px;
-                        height: 48px;
-                        border-radius: 50%;
-                        background: linear-gradient(135deg, #ec4899, #8b5cf6);
-                        border: 2px solid white;
-                        margin-bottom: 10px;
-                    "></div>
-                </div>
-                
                 <!-- Like -->
-                <div style="cursor: pointer; text-align: center; color: white;">
-                    <div style="font-size: 32px;">❤️</div>
-                    <div style="font-size: 12px;">${video.likeCount || 0}</div>
+                <div style="cursor: pointer; text-align: center; color: white;" onclick="toggleLike(this)">
+                    <div style="font-size: 40px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));">🤍</div>
+                    <div style="font-size: 13px; margin-top: 5px;">${video.likeCount || 0}</div>
                 </div>
                 
                 <!-- Comment -->
-                <div style="cursor: pointer; text-align: center; color: white;">
-                    <div style="font-size: 32px;">💬</div>
-                    <div style="font-size: 12px;">${video.commentCount || 0}</div>
+                <div style="cursor: pointer; text-align: center; color: white;" onclick="openComments()">
+                    <div style="font-size: 40px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));">💬</div>
+                    <div style="font-size: 13px; margin-top: 5px;">${video.commentCount || 0}</div>
                 </div>
                 
                 <!-- Share -->
-                <div style="cursor: pointer; text-align: center; color: white;">
-                    <div style="font-size: 32px;">📤</div>
-                    <div style="font-size: 12px;">Share</div>
+                <div style="cursor: pointer; text-align: center; color: white;" onclick="shareVideo()">
+                    <div style="font-size: 40px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));">📤</div>
                 </div>
                 
                 <!-- Sound -->
                 <div style="cursor: pointer; text-align: center; color: white;" 
                      onclick="toggleMute(this.closest('[style*=scroll-snap-align]').querySelector('video'))">
-                    <div style="font-size: 32px;" class="sound-icon">🔊</div>
+                    <div style="font-size: 40px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));" class="sound-icon">🔊</div>
                 </div>
             </div>
         `;
@@ -534,5 +529,34 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+
+// Like toggle function
+window.toggleLike = function(element) {
+    const heartIcon = element.querySelector('div:first-child');
+    const countElement = element.querySelector('div:last-child');
+    let count = parseInt(countElement.textContent) || 0;
+    
+    if (heartIcon.textContent === '🤍') {
+        heartIcon.textContent = '❤️';
+        count++;
+    } else {
+        heartIcon.textContent = '🤍';
+        count--;
+    }
+    
+    countElement.textContent = count;
+};
+
+// Open comments
+window.openComments = function() {
+    console.log('Opening comments...');
+    // TODO: Implement comments modal
+};
+
+// Share video
+window.shareVideo = function() {
+    console.log('Sharing video...');
+    // TODO: Implement share modal
+};
 
 console.log('✅ Main feed system loaded with audio support');
