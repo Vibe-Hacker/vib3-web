@@ -258,120 +258,13 @@ window.showCoinsPage = function() {
     }
 };
 
-// Activity page
+// Activity page - now handled by activity-page-complete.js
 window.showActivityPage = function() {
-    // Hide everything else
-    document.querySelectorAll('.page, .content-page, [id$="Page"], .video-feed').forEach(el => {
-        el.style.display = 'none';
-    });
-    
-    // Create or get activity page
-    let activityPage = document.getElementById('activityPage');
-    if (!activityPage) {
-        activityPage = document.createElement('div');
-        activityPage.id = 'activityPage';
-        document.body.appendChild(activityPage);
-    }
-    
-    activityPage.style.cssText = `
-        position: fixed;
-        top: 0;
-        left: 200px;
-        right: 0;
-        bottom: 0;
-        background: #000;
-        overflow-y: auto;
-        display: block;
-        padding: 40px;
-    `;
-    
-    activityPage.innerHTML = `
-        <h1 style="color: white; font-size: 36px; margin: 0 0 30px 0;">
-            🔔 Activity
-        </h1>
-        
-        <div style="background: #111; border-radius: 15px; padding: 20px;">
-            <div style="
-                display: flex;
-                align-items: center;
-                gap: 15px;
-                padding: 15px 0;
-                border-bottom: 1px solid #222;
-            ">
-                <div style="
-                    width: 48px;
-                    height: 48px;
-                    border-radius: 50%;
-                    background: linear-gradient(135deg, #ec4899, #8b5cf6);
-                "></div>
-                <div style="flex: 1;">
-                    <div style="color: white;">
-                        <strong>@user123</strong> liked your video
-                    </div>
-                    <div style="color: #666; font-size: 12px;">2 minutes ago</div>
-                </div>
-            </div>
-            
-            <div style="
-                display: flex;
-                align-items: center;
-                gap: 15px;
-                padding: 15px 0;
-                border-bottom: 1px solid #222;
-            ">
-                <div style="
-                    width: 48px;
-                    height: 48px;
-                    border-radius: 50%;
-                    background: linear-gradient(135deg, #3b82f6, #06b6d4);
-                "></div>
-                <div style="flex: 1;">
-                    <div style="color: white;">
-                        <strong>@creator456</strong> started following you
-                    </div>
-                    <div style="color: #666; font-size: 12px;">1 hour ago</div>
-                </div>
-                <button style="
-                    background: #00d4ff;
-                    color: black;
-                    border: none;
-                    padding: 8px 20px;
-                    border-radius: 20px;
-                    font-size: 14px;
-                    font-weight: 600;
-                    cursor: pointer;
-                ">Follow Back</button>
-            </div>
-            
-            <div style="
-                display: flex;
-                align-items: center;
-                gap: 15px;
-                padding: 15px 0;
-            ">
-                <div style="
-                    width: 48px;
-                    height: 48px;
-                    border-radius: 50%;
-                    background: linear-gradient(135deg, #10b981, #06b6d4);
-                "></div>
-                <div style="flex: 1;">
-                    <div style="color: white;">
-                        <strong>@vibe789</strong> commented: "This is amazing! 🔥"
-                    </div>
-                    <div style="color: #666; font-size: 12px;">3 hours ago</div>
-                </div>
-            </div>
-        </div>
-    `;
-    
-    // Update sidebar
-    document.querySelectorAll('.sidebar-item').forEach(item => {
-        item.classList.remove('active');
-    });
-    const activityBtn = document.getElementById('sidebarActivity');
-    if (activityBtn) {
-        activityBtn.classList.add('active');
+    if (window.showActivityComplete) {
+        window.showActivityComplete();
+    } else {
+        // Fallback
+        window.showPage('activity');
     }
 };
 
