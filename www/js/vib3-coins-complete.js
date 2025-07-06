@@ -313,15 +313,15 @@ window.showVIB3CoinsComplete = function() {
             <h2 style="color: white; margin-bottom: 25px; font-size: 24px; display: flex; align-items: center; gap: 12px;">
                 <span>💎</span> Recent Coin Activity
             </h2>
-            <div style="background: #1a1a1a; border-radius: 20px; overflow: hidden;">
-                <!-- Activity Item 1 -->
+            <div style="background: #1a1a1a; border-radius: 20px; padding: 5px;">
+                <!-- Challenge Reward -->
                 <div style="
                     display: flex;
                     align-items: center;
                     gap: 20px;
                     padding: 20px 25px;
                     background: #222;
-                    margin: 2px;
+                    margin: 3px;
                     border-radius: 15px;
                 ">
                     <div style="
@@ -339,6 +339,147 @@ window.showVIB3CoinsComplete = function() {
                         <div style="color: #666; font-size: 14px;">2 hours ago</div>
                     </div>
                     <div style="color: #10b981; font-weight: 700; font-size: 22px;">+500 VIB3</div>
+                </div>
+                
+                <!-- Video Likes Bonus -->
+                <div style="
+                    display: flex;
+                    align-items: center;
+                    gap: 20px;
+                    padding: 20px 25px;
+                    background: #222;
+                    margin: 3px;
+                    border-radius: 15px;
+                ">
+                    <div style="
+                        width: 56px;
+                        height: 56px;
+                        background: linear-gradient(135deg, #ec4899, #f472b6);
+                        border-radius: 50%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-size: 24px;
+                    ">❤️</div>
+                    <div style="flex: 1;">
+                        <div style="color: white; font-weight: 600; font-size: 18px;">Video Likes Bonus</div>
+                        <div style="color: #666; font-size: 14px;">5 hours ago</div>
+                    </div>
+                    <div style="color: #10b981; font-weight: 700; font-size: 22px;">+125 VIB3</div>
+                </div>
+                
+                <!-- Sent to @musiclover -->
+                <div style="
+                    display: flex;
+                    align-items: center;
+                    gap: 20px;
+                    padding: 20px 25px;
+                    background: #222;
+                    margin: 3px;
+                    border-radius: 15px;
+                ">
+                    <div style="
+                        width: 56px;
+                        height: 56px;
+                        background: linear-gradient(135deg, #8b5cf6, #a78bfa);
+                        border-radius: 50%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-size: 24px;
+                    ">➡️</div>
+                    <div style="flex: 1;">
+                        <div style="color: white; font-weight: 600; font-size: 18px;">Sent to @musiclover</div>
+                        <div style="color: #666; font-size: 14px;">1 day ago</div>
+                    </div>
+                    <div style="color: #ef4444; font-weight: 700; font-size: 22px;">-200 VIB3</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Earn More Coins Section -->
+        <div style="padding: 0 40px 60px;">
+            <h2 style="color: white; margin-bottom: 25px; font-size: 24px; display: flex; align-items: center; gap: 12px;">
+                <span>💰</span> Earn More Coins
+            </h2>
+            <div style="
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 25px;
+            ">
+                <!-- Daily Quests -->
+                <div style="
+                    background: #222;
+                    border-radius: 20px;
+                    padding: 35px;
+                    text-align: center;
+                    cursor: pointer;
+                    transition: transform 0.2s;
+                " onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+                    <div style="
+                        width: 80px;
+                        height: 80px;
+                        background: linear-gradient(135deg, #ec4899, #f472b6);
+                        border-radius: 50%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-size: 40px;
+                        margin: 0 auto 20px;
+                    ">🎯</div>
+                    <h3 style="color: white; font-size: 22px; margin: 0 0 10px 0;">Daily Quests</h3>
+                    <p style="color: #888; margin: 0 0 20px 0; font-size: 14px;">Complete daily tasks for coins</p>
+                    <div style="color: #10b981; font-size: 18px; font-weight: 600;">+50-300 VIB3</div>
+                </div>
+                
+                <!-- Creator Bonus -->
+                <div style="
+                    background: #222;
+                    border-radius: 20px;
+                    padding: 35px;
+                    text-align: center;
+                    cursor: pointer;
+                    transition: transform 0.2s;
+                " onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+                    <div style="
+                        width: 80px;
+                        height: 80px;
+                        background: linear-gradient(135deg, #8b5cf6, #a78bfa);
+                        border-radius: 50%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-size: 40px;
+                        margin: 0 auto 20px;
+                    ">🎁</div>
+                    <h3 style="color: white; font-size: 22px; margin: 0 0 10px 0;">Creator Bonus</h3>
+                    <p style="color: #888; margin: 0 0 20px 0; font-size: 14px;">Earn from video performance</p>
+                    <div style="color: #10b981; font-size: 18px; font-weight: 600;">+100-1000 VIB3</div>
+                </div>
+                
+                <!-- Referral Program -->
+                <div style="
+                    background: #222;
+                    border-radius: 20px;
+                    padding: 35px;
+                    text-align: center;
+                    cursor: pointer;
+                    transition: transform 0.2s;
+                " onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+                    <div style="
+                        width: 80px;
+                        height: 80px;
+                        background: linear-gradient(135deg, #06b6d4, #22d3ee);
+                        border-radius: 50%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-size: 40px;
+                        margin: 0 auto 20px;
+                    ">👥</div>
+                    <h3 style="color: white; font-size: 22px; margin: 0 0 10px 0;">Referral Program</h3>
+                    <p style="color: #888; margin: 0 0 20px 0; font-size: 14px;">Invite friends to VIB3</p>
+                    <div style="color: #10b981; font-size: 18px; font-weight: 600;">+500 VIB3</div>
                 </div>
             </div>
         </div>
