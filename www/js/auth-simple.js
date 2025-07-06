@@ -134,6 +134,13 @@ async function handleLogin() {
         if (loginModal) {
             loginModal.style.display = 'none';
         }
+        
+        // Show main feed after successful login
+        if (window.showMainFeed) {
+            window.showMainFeed();
+        } else if (window.showPage) {
+            window.showPage('feed');
+        }
     }
 }
 
