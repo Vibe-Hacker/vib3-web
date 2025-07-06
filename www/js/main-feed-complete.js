@@ -151,6 +151,14 @@ window.showMainFeed = function() {
     document.querySelectorAll('.sidebar-item').forEach(item => {
         item.classList.remove('active');
     });
+    
+    // Force play first video after a short delay
+    setTimeout(() => {
+        const firstVideo = document.querySelector('#videoFeedContainer video');
+        if (firstVideo) {
+            firstVideo.play().catch(e => console.log('First video play failed:', e));
+        }
+    }, 500);
 };
 
 // Tab switching
@@ -249,12 +257,12 @@ function displayMainFeedVideos(videos) {
                     width: auto;
                     height: 100%;
                     object-fit: contain;
+                    cursor: pointer;
                 "
                 loop
                 autoplay
                 playsinline
                 webkit-playsinline
-                onclick="toggleVideoPlayback(this)"
             ></video>
             
             <!-- User info overlay -->
