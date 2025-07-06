@@ -81,10 +81,11 @@ function displayRailwayVideos(videos) {
                 src="${video.videoUrl}"
                 style="width: 100%; height: 100%; object-fit: contain;"
                 loop
-                muted
-                ${index === 0 ? 'autoplay' : ''}
+                ${index === 0 ? 'autoplay muted' : ''}
                 playsinline
                 webkit-playsinline
+                controls
+                controlsList="nodownload"
             ></video>
             
             <div class="video-overlay" style="position: absolute; inset: 0; pointer-events: none;">

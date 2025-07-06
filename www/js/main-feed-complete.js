@@ -254,7 +254,8 @@ function displayMainFeedVideos(videos) {
                 ${index === 0 ? 'autoplay' : ''}
                 playsinline
                 webkit-playsinline
-                onclick="this.paused ? this.play() : this.pause()"
+                onclick="toggleVideoPlayback(this)"
+                onloadedmetadata="this.muted = false"
             ></video>
             
             <!-- User info overlay -->
@@ -314,8 +315,9 @@ function displayMainFeedVideos(videos) {
                 </div>
                 
                 <!-- Sound -->
-                <div style="cursor: pointer; text-align: center; color: white;">
-                    <div style="font-size: 32px;">🔊</div>
+                <div style="cursor: pointer; text-align: center; color: white;" 
+                     onclick="toggleMute(this.closest('[style*=scroll-snap-align]').querySelector('video'))">
+                    <div style="font-size: 32px;" class="sound-icon">🔊</div>
                 </div>
             </div>
         `;
@@ -459,4 +461,58 @@ window.showFeedAfterLogin = function() {
     showMainFeed();
 };
 
-console.log('✅ Main feed system loaded');
+// Video playback controls
+window.toggleVideoPlayback = function(video) {
+    if (video.paused) {
+        // Pause all other videos
+        document.querySelectorAll('video').forEach(v => {
+            if (v !== video) {
+                v.pause();
+            }
+        });
+        video.play();
+        video.muted = false; // Ensure audio is on when playing
+    } else {
+        video.pause();
+    }
+};
+
+// Mute/unmute toggle
+window.toggleMute = function(video) {
+    if (!video) return;
+    
+    video.muted = !video.muted;
+    
+    // Update icon
+    const soundIcon = video.closest('[style*="scroll-snap-align"]')?.querySelector('.sound-icon');
+    if (soundIcon) {
+        soundIcon.textContent = video.muted ? '🔇' : '🔊';
+    }
+};
+
+// Initialize volume controls on page load
+document.addEventListener('DOMContentLoaded', function() {
+    // Set up global volume control
+    document.addEventListener('keydown', function(e) {
+        const activeVideo = document.querySelector('video:not([paused])');
+        if (!activeVideo) return;
+        
+        // Volume up: Arrow Up or +
+        if (e.key === 'ArrowUp' || e.key === '+') {
+            e.preventDefault();
+            activeVideo.volume = Math.min(1, activeVideo.volume + 0.1);
+        }
+        // Volume down: Arrow Down or -
+        else if (e.key === 'ArrowDown' || e.key === '-') {
+            e.preventDefault();
+            activeVideo.volume = Math.max(0, activeVideo.volume - 0.1);
+        }
+        // Mute toggle: M
+        else if (e.key === 'm' || e.key === 'M') {
+            e.preventDefault();
+            toggleMute(activeVideo);
+        }
+    });
+});
+
+console.log('✅ Main feed system loaded with audio support');
