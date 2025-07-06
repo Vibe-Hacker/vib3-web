@@ -73,6 +73,8 @@ function displayRailwayVideos(videos) {
             align-items: center;
             justify-content: center;
             background: black;
+            padding: 20px;
+            box-sizing: border-box;
         `;
         
         videoItem.innerHTML = `
