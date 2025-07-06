@@ -294,9 +294,11 @@ window.showMessagesPage = function() {
     }
 };
 
-// Profile page
+// Profile page - now handled by profile-page-complete.js
 window.showProfilePage = function() {
-    if (window.showProfile) {
+    if (window.showProfileComplete) {
+        window.showProfileComplete();
+    } else if (window.showProfile) {
         window.showProfile();
     } else {
         // Fallback
