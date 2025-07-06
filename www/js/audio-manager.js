@@ -159,18 +159,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (node.nodeType === 1) { // Element node
                     const videos = node.querySelectorAll ? node.querySelectorAll('video') : [];
                     videos.forEach(video => {
-                        // Ensure video plays
+                        // Ensure video plays with sound like Railway
                         video.addEventListener('loadedmetadata', function() {
-                            this.play().catch(e => {
-                                console.log('Initial play failed, trying muted:', e);
-                                this.muted = true;
-                                this.play().then(() => {
-                                    // Unmute after successful play
-                                    setTimeout(() => {
-                                        this.muted = false;
-                                    }, 100);
-                                });
-                            });
+                            this.play().catch(e => console.log('Play failed:', e));
                         });
                     });
                 }

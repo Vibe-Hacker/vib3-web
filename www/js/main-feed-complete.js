@@ -251,12 +251,10 @@ function displayMainFeedVideos(videos) {
                     object-fit: contain;
                 "
                 loop
-                muted
                 autoplay
                 playsinline
                 webkit-playsinline
                 onclick="toggleVideoPlayback(this)"
-                onloadeddata="this.play().catch(e => console.log('Play failed:', e))"
             ></video>
             
             <!-- User info overlay -->
@@ -444,10 +442,6 @@ function setupVideoObserver(container) {
                             }
                         }, { once: true });
                     }
-                    // Unmute after a short delay
-                    setTimeout(() => {
-                        video.muted = false;
-                    }, 100);
                 } else {
                     video.pause();
                 }
