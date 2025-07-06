@@ -150,4 +150,39 @@ document.addEventListener('keydown', function(e) {
     }
 });
 
+// Initialize videos when they appear
+document.addEventListener('DOMContentLoaded', function() {
+    // Monitor for new videos being added to DOM
+    const videoObserver = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+            mutation.addedNodes.forEach(function(node) {
+                if (node.nodeType === 1) { // Element node
+                    const videos = node.querySelectorAll ? node.querySelectorAll('video') : [];
+                    videos.forEach(video => {
+                        // Ensure video plays
+                        video.addEventListener('loadedmetadata', function() {
+                            this.play().catch(e => {
+                                console.log('Initial play failed, trying muted:', e);
+                                this.muted = true;
+                                this.play().then(() => {
+                                    // Unmute after successful play
+                                    setTimeout(() => {
+                                        this.muted = false;
+                                    }, 100);
+                                });
+                            });
+                        });
+                    });
+                }
+            });
+        });
+    });
+    
+    // Start observing the document for added videos
+    videoObserver.observe(document.body, {
+        childList: true,
+        subtree: true
+    });
+});
+
 console.log('✅ VIB3 Audio Manager loaded - Press M to mute/unmute, ↑↓ for volume');

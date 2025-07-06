@@ -251,10 +251,12 @@ function displayMainFeedVideos(videos) {
                     object-fit: contain;
                 "
                 loop
+                muted
                 autoplay
                 playsinline
                 webkit-playsinline
                 onclick="toggleVideoPlayback(this)"
+                onloadeddata="this.play().catch(e => console.log('Play failed:', e))"
             ></video>
             
             <!-- User info overlay -->
@@ -432,7 +434,20 @@ function setupVideoObserver(container) {
             const video = entry.target.querySelector('video');
             if (video) {
                 if (entry.isIntersecting) {
-                    video.play().catch(e => console.log('Play failed:', e));
+                    // Ensure video is loaded before playing
+                    if (video.readyState >= 3) {
+                        video.play().catch(e => console.log('Play failed:', e));
+                    } else {
+                        video.addEventListener('loadeddata', function() {
+                            if (entry.isIntersecting) {
+                                video.play().catch(e => console.log('Play failed:', e));
+                            }
+                        }, { once: true });
+                    }
+                    // Unmute after a short delay
+                    setTimeout(() => {
+                        video.muted = false;
+                    }, 100);
                 } else {
                     video.pause();
                 }
@@ -440,9 +455,12 @@ function setupVideoObserver(container) {
         });
     }, options);
     
-    container.querySelectorAll('[style*="scroll-snap-align"]').forEach(item => {
-        observer.observe(item);
-    });
+    // Observe all video containers
+    setTimeout(() => {
+        container.querySelectorAll('[style*="scroll-snap-align"]').forEach(item => {
+            observer.observe(item);
+        });
+    }, 100);
 }
 
 // Override showPage for main feed

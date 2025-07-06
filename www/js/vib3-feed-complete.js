@@ -81,9 +81,11 @@ function displayRailwayVideos(videos) {
                 src="${video.videoUrl}"
                 style="width: 100%; height: 100%; object-fit: contain;"
                 loop
+                muted
                 autoplay
                 playsinline
                 webkit-playsinline
+                onloadeddata="this.play().catch(e => console.log('Play failed:', e))"
             ></video>
             
             <div class="video-overlay" style="position: absolute; inset: 0; pointer-events: none;">
