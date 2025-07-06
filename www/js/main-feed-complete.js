@@ -251,11 +251,10 @@ function displayMainFeedVideos(videos) {
                     object-fit: contain;
                 "
                 loop
-                ${index === 0 ? 'autoplay' : ''}
+                autoplay
                 playsinline
                 webkit-playsinline
                 onclick="toggleVideoPlayback(this)"
-                onloadedmetadata="this.muted = false"
             ></video>
             
             <!-- User info overlay -->
@@ -471,7 +470,6 @@ window.toggleVideoPlayback = function(video) {
             }
         });
         video.play();
-        video.muted = false; // Ensure audio is on when playing
     } else {
         video.pause();
     }

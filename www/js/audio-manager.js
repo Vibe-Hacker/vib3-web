@@ -8,26 +8,8 @@ window.vib3Audio = {
     volume: 1.0
 };
 
-// Initialize audio when user interacts with the page
-function initializeAudio() {
-    // Remove the initialization listener after first interaction
-    document.removeEventListener('click', initializeAudio);
-    document.removeEventListener('touchstart', initializeAudio);
-    
-    console.log('🔊 Audio system initialized');
-    
-    // Try to unmute any playing videos
-    const videos = document.querySelectorAll('video');
-    videos.forEach(video => {
-        if (!video.paused && video.muted) {
-            video.muted = false;
-        }
-    });
-}
-
-// Add listeners for user interaction
-document.addEventListener('click', initializeAudio, { once: true });
-document.addEventListener('touchstart', initializeAudio, { once: true });
+// VIB3 videos play with audio just like Railway
+console.log('🔊 Audio enabled by default - just like Railway!');
 
 // Handle video play events
 document.addEventListener('play', function(e) {
@@ -44,17 +26,6 @@ document.addEventListener('play', function(e) {
         
         // Apply global volume
         e.target.volume = window.vib3Audio.volume;
-        
-        // Try to unmute if not first video (first video must be muted for autoplay)
-        if (!e.target.hasAttribute('data-first-play')) {
-            e.target.setAttribute('data-first-play', 'true');
-            // Keep first video muted for autoplay policy
-            if (!e.target.closest('[data-first-video]')) {
-                setTimeout(() => {
-                    e.target.muted = false;
-                }, 100);
-            }
-        }
     }
 }, true);
 
